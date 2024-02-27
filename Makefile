@@ -12,9 +12,8 @@ help: ## Show this help
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "\033[36m%-38s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
 .PHONY: setup-dev
-setup-dev: ## setup dev environment: pipx, poetry, pre-commit and .env
-	poetry install
-	pre-commit install 2>&1
+setup-dev: ## setup dev environment: poetry and .env
+	poetry install --no-root
 	[ ! -e ".env" ] && cp "example.env" ".env" || echo "file .env already exists"
 
 
