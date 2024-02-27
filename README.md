@@ -111,8 +111,10 @@ Deploy the application by setting up Terraform variables, initializing Terraform
    docker build . -f Dockerfile --target production --tag $OMDB_PROJECT_TAG
    docker push $OMDB_PROJECT_TAG
    ```
-   you may have to youse docker buildx if you are not on linux.
-
+   you may have to use docker buildx if you are not on linux.
+   ```bash
+   docker buildx build  . -f Dockerfile --tag $OMDB_PROJECT_TAG   --platform linux/amd64 --target production
+   ```
 5. **Apply infrastructure**
 
    ```bash
