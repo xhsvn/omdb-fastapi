@@ -19,7 +19,8 @@ async def login_for_access_token(
     auth_service: Annotated[AuthService, Depends()],
 ) -> auth_schema.AccessTokenResponse:
     """
-    Authenticate a user with the given username and password for using the API docs.
+    Authenticate a user with the given username and password for using the API docs
+    by using the OAuth2PasswordRequestForm.
 
     :param form_data: form data with username and password
     :return: access token

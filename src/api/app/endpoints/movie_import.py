@@ -2,7 +2,6 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends, status
 
-
 from src.core.schema import ExceptionModel
 from src.schemas import movie_import_schema
 from src.services.movie_import_service import MovieImportService
