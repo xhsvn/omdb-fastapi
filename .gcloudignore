@@ -1,0 +1,9 @@
+# Ignore everything
+*
+
+## keep the required files
+!.dockerignore
+!src/**
+!compose/**
+!pyproject.toml
+!poetry.lock

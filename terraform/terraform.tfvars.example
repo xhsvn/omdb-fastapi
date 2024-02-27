@@ -1,0 +1,8 @@
+gcp_project_id = "brite-test-415412"
+gcp_region     = "europe-west1"
+gcp_zone       = "europe-west1-b"
+
+app_name       = "brite-omdb"
+
+
+omdb_api_key   = "3ea4bc11"
