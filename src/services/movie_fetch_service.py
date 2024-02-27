@@ -1,16 +1,15 @@
 from typing import Annotated
 
 from fastapi import Depends
+from loguru import logger
 
 from src.core.database import DBSession
-from src.models.movie_import import ImportStatus
 from src.models.movie import Movie
-from src.repositories.movie_repository import MovieRepository
+from src.models.movie_import import ImportStatus
 from src.repositories.movie_import_repository import MovieImportRepository
-from src.services.omdb_service import OmdbServiceDep
+from src.repositories.movie_repository import MovieRepository
 from src.schemas.movie_schema import MovieOmdb
-
-from loguru import logger
+from src.services.omdb_service import OmdbServiceDep
 
 
 class MovieFetchService:

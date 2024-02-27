@@ -1,10 +1,9 @@
 from fastapi import FastAPI
-
 from fastapi_pagination import add_pagination
 from fastapi_pagination.utils import disable_installed_extensions_check
 
-from src.base_app import create_app
 from src.api.app.routes import router
+from src.base_app import create_app
 
 
 def create_application() -> FastAPI:

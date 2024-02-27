@@ -1,15 +1,14 @@
 from typing import Annotated
 
 from fastapi import Depends
-
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
 
+from src.core.exceptions import AuthRequired, InvalidToken, UserNotFound
 from src.models.user import User
 from src.schemas.auth_schema import JWTData
-from src.core.exceptions import AuthRequired, InvalidToken, UserNotFound
 from src.services.user_service import UserService
-from src.settings import get_settings, Settings
+from src.settings import Settings, get_settings
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/auth/doc", auto_error=False)
 

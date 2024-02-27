@@ -2,9 +2,8 @@ import enum
 from functools import lru_cache
 from typing import Any
 
-
-from sqlalchemy.engine.url import URL
 from pydantic_settings import BaseSettings
+from sqlalchemy.engine.url import URL
 
 
 class LogLevel(str, enum.Enum):  # noqa: WPS600

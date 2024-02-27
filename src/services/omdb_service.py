@@ -1,7 +1,6 @@
 from typing import Annotated
 import aiohttp
 
-
 from fastapi import Depends
 
 from src.deps import SettingsDep

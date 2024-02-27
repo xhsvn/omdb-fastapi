@@ -3,7 +3,6 @@ from typing import AsyncGenerator
 
 from fastapi import FastAPI
 
-
 from src.core.database import setup_db
 
 

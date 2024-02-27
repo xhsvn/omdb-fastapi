@@ -1,8 +1,7 @@
 from fastapi import FastAPI
 
-
-from src.base_app import create_app
 from src.api.worker.routes import router
+from src.base_app import create_app
 
 
 def create_application() -> FastAPI:

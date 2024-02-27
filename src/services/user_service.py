@@ -2,11 +2,11 @@ from typing import Annotated
 
 from fastapi import Depends
 
-from src.schemas import user_schema
-from src.models.user import User as UserModel
-from src.repositories.user_repository import UserRepository
 from src.core.exceptions import UsernameTaken
 from src.core.security import get_password_hash
+from src.models.user import User as UserModel
+from src.repositories.user_repository import UserRepository
+from src.schemas import user_schema
 
 
 class UserService:

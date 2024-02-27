@@ -1,7 +1,6 @@
 from typing import Annotated
 
-from fastapi import Depends, BackgroundTasks
-
+from fastapi import BackgroundTasks, Depends
 
 from src.core.exceptions import MovieAlreadyExists, MovieAlreadySubmitted
 from src.models.movie_import import MovieImport
