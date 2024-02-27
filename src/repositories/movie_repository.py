@@ -10,6 +10,14 @@ class MovieRepository:
     def __init__(self, session: DBSession):
         self.session = session
 
+    async def is_populated(self) -> bool:
+        """
+        Check if movie table is populated.
+        :return: True if table is populated, False otherwise
+        """
+        res = await self.session.execute(select(exists().where(Movie.id > 0)))
+        return res.scalar_one()
+
     async def list_movies(self, offset: int, limit: int) -> list[Movie]:
         """
         List movies with pagination ond default ordering on title.

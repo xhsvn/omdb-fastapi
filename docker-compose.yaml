@@ -48,4 +48,4 @@ services:
     env_file: .env
     ports:
       - "8585:8585"
-    command: gcloud beta emulators pubsub start --project ${PUBSUB_PROJECT_ID} --host-port=0.0.0.0:8585
+    command: gcloud beta emulators pubsub start --project ${GOOGLE_PROJECT_ID} --host-port=0.0.0.0:8585

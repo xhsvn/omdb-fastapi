@@ -65,7 +65,6 @@ def mock_settings():
         jwt_exp=5,
         jwt_alg="HS256",
         google_project_id="test_project",
-        pubsub_project_id="test_pubsub_project",
         omdb_api_key="omdb_api_key",
     )
     return settings

@@ -32,7 +32,6 @@ class Settings(BaseSettings):
 
     # gcp cloud settings
     google_project_id: str
-    pubsub_project_id: str | None = None
 
     pubsub_movies_fetch_topic: str
 

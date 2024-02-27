@@ -8,7 +8,7 @@ from src.deps import SettingsDep
 
 class QueueService:
     def __init__(self, settings: SettingsDep) -> None:
-        self.project = settings.pubsub_project_id or settings.google_project_id
+        self.project = settings.google_project_id
         self.topic = settings.pubsub_movies_fetch_topic
         self.publisher_client = pubsub_v1.PublisherClient()
         self.fetch_topic_path = self.publisher_client.topic_path(

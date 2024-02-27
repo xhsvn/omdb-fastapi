@@ -23,7 +23,7 @@ from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
     pubsub_emulator_host: str
-    pubsub_project_id: str
+    google_project_id: str
 
     pubsub_movies_fetch_topic: str
     pubsub_movies_fetch_subscription: str
@@ -163,7 +163,7 @@ def setup_pubsub_emulator(  # noqa: PLR0913
 if __name__ == "__main__":
     setup_pubsub_emulator(
         host=settings.pubsub_emulator_host,
-        project_id=settings.pubsub_project_id,
+        project_id=settings.google_project_id,
         topic_id=settings.pubsub_movies_fetch_topic,
         subscription_name=settings.pubsub_movies_fetch_subscription,
         topic_push_endpoint=settings.pubsub_movies_fetch_push_endpoint,

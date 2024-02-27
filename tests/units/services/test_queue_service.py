@@ -6,7 +6,7 @@ from src.services.queue_service import QueueService
 async def test_queue_service_init(gcp_pubsub_client, mock_settings):
     queue_service = QueueService(settings=mock_settings)
     gcp_pubsub_client.assert_called_once()
-    assert queue_service.project == mock_settings.pubsub_project_id
+    assert queue_service.project == mock_settings.google_project_id
     assert queue_service.topic == mock_settings.pubsub_movies_fetch_topic
 
 

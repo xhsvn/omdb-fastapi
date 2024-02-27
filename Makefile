@@ -13,8 +13,6 @@ help: ## Show this help
 
 .PHONY: setup-dev
 setup-dev: ## setup dev environment: pipx, poetry, pre-commit and .env
-	pip install pipx
-	pipx install poetry==1.7.1
 	poetry install
 	pre-commit install 2>&1
 	[ ! -e ".env" ] && cp "example.env" ".env" || echo "file .env already exists"
@@ -31,7 +29,7 @@ run-separate: ## Run docker-compose in detached mode
 
 .PHONY: run
 run: ## Run docker-compose in detached mode
-	docker-compose -f docker-compose.yaml -f docker-compose-plus+gpc+cred.yaml up --detach
+	docker-compose -f docker-compose.yaml up --detach
 
 .PHONY: stop
 stop: ## Stop docker-compose
