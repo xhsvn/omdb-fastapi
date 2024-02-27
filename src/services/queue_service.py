@@ -20,7 +20,7 @@ class QueueService:
                                 message: str = "", **attrs) -> str:
         """
         Publish a single message to a Pub/Sub topic for fetching.
-        Return the message ID or raise an exception.
+        Return the message ID or raise an exception and fail the message.
         """
 
         future = self.publisher_client.publish(
