@@ -16,7 +16,8 @@ class QueueService:
             topic=self.topic,
         )
 
-    def publish_on_fetch_topic(self, *, message: str = "", **attrs) -> str:
+    def publish_on_fetch_topic(self, *,
+                                message: str = "", **attrs) -> str:
         """
         Publish a single message to a Pub/Sub topic for fetching.
         Return the message ID or raise an exception.
