@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set -o errexit
+set -o pipefail
+set -o nounset
+
+PORT="${PORT:=8080}"
+
+alembic upgrade head
+python -m 'src.populate_db'
+uvicorn --factory --host 0.0.0.0 --port ${PORT} src.app_api:create_application

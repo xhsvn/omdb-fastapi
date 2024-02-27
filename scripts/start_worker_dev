@@ -1,0 +1,12 @@
+#!/bin/bash
+
+PORT="${PORT:=8090}"
+
+
+
+/src/scripts/wait-for-it.sh ${PUBSUB_EMULATOR_HOST} -t 15 -- echo "Pubsub is up"
+
+# Start the emulator
+python /src/emulators/pubsub.py
+
+uvicorn --factory --reload --host 0.0.0.0 --port ${PORT} src.app_worker:create_application
