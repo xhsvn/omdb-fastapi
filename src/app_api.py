@@ -13,5 +13,4 @@ def create_application() -> FastAPI:
     base_app.include_router(router, prefix="/api")
     add_pagination(base_app)
 
-
     return base_app

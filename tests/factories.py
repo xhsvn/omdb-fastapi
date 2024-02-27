@@ -1,11 +1,10 @@
 import factory
 
-from src.models.user import User
+from src.core.security import get_password_hash
 from src.models.movie import Movie
 from src.models.movie_import import ImportStatus, MovieImport
-from src.core.security import get_password_hash
+from src.models.user import User
 from src.schemas import movie_import_schema, movie_schema, user_schema
-
 
 
 class UserCreateSchemaFactory(factory.Factory):
@@ -15,6 +14,7 @@ class UserCreateSchemaFactory(factory.Factory):
     class Meta:
         model = user_schema.UserCreate
 
+
 class UserModelFactory(factory.Factory):
     username = factory.Faker("user_name")
     password = factory.Faker("password")
@@ -22,13 +22,12 @@ class UserModelFactory(factory.Factory):
 
     class Meta:
         model = User
-        exclude = ("password", )
+        exclude = ("password",)
 
 
 class MovieModelFactory(factory.Factory):
     title = factory.Faker("sentence")
     year = factory.Faker("year")
-
 
     class Meta:
         model = Movie
@@ -39,6 +38,7 @@ class MovieImportCreateSchemaFactory(factory.Factory):
 
     class Meta:
         model = movie_import_schema.MovieImportCreate
+
 
 class MovieImportSchemaFactory(MovieImportCreateSchemaFactory):
     id = factory.Faker("random_int", min=1)
@@ -79,8 +79,6 @@ class MovieOmdbFactory(factory.Factory):
     BoxOffice = factory.Faker("sentence")
     Production = factory.Faker("sentence")
     Website = factory.Faker("url")
-
-
 
     class Meta:
         model = movie_schema.MovieOmdb

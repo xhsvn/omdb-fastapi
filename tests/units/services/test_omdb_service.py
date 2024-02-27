@@ -11,11 +11,15 @@ async def test_get_movie_by_title(mock_settings):
     expected_response = {"Title": "Test Movie", "Year": "2020"}
 
     with aioresponses() as m:
-        m.get(f"http://www.omdbapi.com/?t={movie_title}&apikey={mock_settings.omdb_api_key}", payload=expected_response)
+        m.get(
+            f"http://www.omdbapi.com/?t={movie_title}&apikey={mock_settings.omdb_api_key}",
+            payload=expected_response,
+        )
 
         response = await omdb_service.get_movie_by_title(title=movie_title)
 
         assert response == expected_response
+
 
 @pytest.mark.asyncio
 async def test_get_movie_by_id(mock_settings):
@@ -25,7 +29,10 @@ async def test_get_movie_by_id(mock_settings):
     expected_response = {"Title": "Test Movie", "Year": "2020"}
 
     with aioresponses() as m:
-        m.get(f"http://www.omdbapi.com/?i={movie_id}&apikey={mock_settings.omdb_api_key}", payload=expected_response)
+        m.get(
+            f"http://www.omdbapi.com/?i={movie_id}&apikey={mock_settings.omdb_api_key}",
+            payload=expected_response,
+        )
 
         response = await omdb_service.get_movie_by_id(movie_id=movie_id)
 

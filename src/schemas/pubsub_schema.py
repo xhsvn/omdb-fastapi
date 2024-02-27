@@ -1,5 +1,4 @@
 from base64 import b64decode
-from typing import Any
 
 from pydantic import Base64Str
 from pydantic import BaseModel, Field
@@ -17,6 +16,7 @@ class MovieFetchGooglePubSubMessage(BaseModel):
 
     def decode(self) -> str:
         return b64decode(self.data).decode("utf8")
+
 
 class MovieFetchGooglePubSubPushRequest(BaseModel):
     message: MovieFetchGooglePubSubMessage

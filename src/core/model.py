@@ -1,4 +1,3 @@
-
 import datetime
 from sqlalchemy import func
 from sqlalchemy.ext.asyncio import AsyncAttrs
@@ -10,11 +9,8 @@ from sqlalchemy.orm import mapped_column
 class Base(AsyncAttrs, DeclarativeBase):
     id: Mapped[int] = mapped_column(primary_key=True)
     created_at: Mapped[datetime.datetime] = mapped_column(
-        default=func.now(),
-        index=True
+        default=func.now(), index=True
     )
     updated_at: Mapped[datetime.datetime] = mapped_column(
-        default=func.now(),
-        onupdate=func.now(),
-        index=True
+        default=func.now(), onupdate=func.now(), index=True
     )

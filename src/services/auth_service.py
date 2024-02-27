@@ -1,4 +1,3 @@
-
 from typing import Annotated
 
 from datetime import datetime, timedelta
@@ -12,11 +11,13 @@ from src.core.security import verify_password
 from src.core.exceptions import InvalidCredentials
 from src.deps import SettingsDep
 
-class AuthService:
 
-    def __init__(self,
+class AuthService:
+    def __init__(
+        self,
         user_repository: Annotated[UserRepository, Depends()],
-        settings: SettingsDep):
+        settings: SettingsDep,
+    ):
         self.user_repository = user_repository
         self.settings = settings
 
@@ -37,7 +38,6 @@ class AuthService:
 
         return user
 
-
     async def login(self, username: str, password: str) -> str:
         """
         Authenticate a user with the given username and password and return the access token.
@@ -48,7 +48,9 @@ class AuthService:
         user = await self.authenticate_user(username, password)
         jwt_data = {
             "sub": str(user.id),
-            'exp': datetime.utcnow() + timedelta(minutes=self.settings.jwt_exp)
+            "exp": datetime.utcnow() + timedelta(minutes=self.settings.jwt_exp),
         }
-        access_token = jwt.encode(jwt_data, self.settings.jwt_secret, algorithm=self.settings.jwt_alg)   
+        access_token = jwt.encode(
+            jwt_data, self.settings.jwt_secret, algorithm=self.settings.jwt_alg
+        )
         return access_token

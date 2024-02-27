@@ -37,7 +37,7 @@ async def register_user(
     summary="Get current user",
     description="Get the current user.",
     response_description="The current user",
-    )
+)
 async def get_user(user: CurrentUser):
     """
     Get the current user.

@@ -12,13 +12,15 @@ from src.schemas.movie_schema import MovieOmdb
 
 from loguru import logger
 
+
 class MovieFetchService:
-    
-    def __init__(self,
+    def __init__(
+        self,
         movie_repository: Annotated[MovieRepository, Depends()],
         movie_import_repository: Annotated[MovieImportRepository, Depends()],
         session: DBSession,
-        omdb_service: OmdbServiceDep):
+        omdb_service: OmdbServiceDep,
+    ):
         self.movie_import_repository = movie_import_repository
         self.movie_repository = movie_repository
         self.omdb_service = omdb_service
@@ -35,7 +37,11 @@ class MovieFetchService:
         logger.info(f"Fetching movie data for movie {movie_title}")
 
         async with self.session.begin():
-            movie_import = await self.movie_import_repository.get_movie_import_or_none_by_id(movie_import_id)
+            movie_import = (
+                await self.movie_import_repository.get_movie_import_or_none_by_id(
+                    movie_import_id
+                )
+            )
 
             if not movie_import or movie_import.status != ImportStatus.FETCHING:
                 logger.info(f"Movie {movie_title} already fetched")
@@ -49,9 +55,7 @@ class MovieFetchService:
                 await self.movie_import_repository.add_movie_import(movie_import)
                 return
 
-
         result = await self.omdb_service.get_movie_by_title(movie_title)
-
 
         if result.get("Response") == "False":
             movie_import.status = ImportStatus.NOT_FOUND
@@ -67,8 +71,6 @@ class MovieFetchService:
             await self.movie_import_repository.add_movie_import(movie_import)
             return
 
-    
-
     async def process_dead_letter(self, movie_title: str, movie_import_id: str):
         """
         Process dead letter queue for now just set the status to error and log
@@ -79,7 +81,11 @@ class MovieFetchService:
         """
         logger.info(f"Processing dead letter for movie {movie_title}")
 
-        movie_import = await self.movie_import_repository.get_movie_import_or_none_by_id(movie_import_id)
+        movie_import = (
+            await self.movie_import_repository.get_movie_import_or_none_by_id(
+                movie_import_id
+            )
+        )
 
         if not movie_import:
             logger.info(f"Movie {movie_title} not found")

@@ -1,14 +1,13 @@
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, status
-
-from fastapi_pagination import paginate, LimitOffsetParams
+from fastapi_pagination import LimitOffsetParams, paginate
 
 from src.core.pagination import LimitOffsetPage
 from src.core.schema import ExceptionModel
+from src.deps import CurrentUser
 from src.schemas import movie_schema
 from src.services.movie_service import MovieService
-from src.deps import CurrentUser
 
 router = APIRouter(prefix="/movies", tags=["movie"])
 
@@ -18,12 +17,12 @@ router = APIRouter(prefix="/movies", tags=["movie"])
     response_model=LimitOffsetPage[movie_schema.Movie],
     summary="List movies",
     description="List all movies with pagination.",
-    response_description="List of movies"
+    response_description="List of movies",
 )
 async def list_movies(
     movies_service: Annotated[MovieService, Depends()],
     pagination: LimitOffsetParams = Depends(),
-    ):
+):
     """
     List all movies with default ording on title and pagination.
 
@@ -32,8 +31,10 @@ async def list_movies(
     :return: List of movies
     """
 
-    return paginate(await movies_service.list_movies(pagination.offset, pagination.limit), pagination)
-
+    return paginate(
+        await movies_service.list_movies(pagination.offset, pagination.limit),
+        pagination,
+    )
 
 
 @router.get(
@@ -43,12 +44,11 @@ async def list_movies(
     description="Get the movie with the given title.",
     response_description="The movie",
     responses={status.HTTP_404_NOT_FOUND: {"model": ExceptionModel}},
-
 )
 async def get_movie(
     movie_title: str,
     movies_service: Annotated[MovieService, Depends()],
-    ):
+):
     """
     Get the movie with the given title.
     :param movie_title: title of movie to get
@@ -63,14 +63,16 @@ async def get_movie(
     summary="Delete movie",
     description="Delete the movie with the given id.",
     response_description="The movie was deleted",
-    responses={status.HTTP_404_NOT_FOUND: {"model": ExceptionModel},
-               status.HTTP_401_UNAUTHORIZED: {"model": ExceptionModel}}
+    responses={
+        status.HTTP_404_NOT_FOUND: {"model": ExceptionModel},
+        status.HTTP_401_UNAUTHORIZED: {"model": ExceptionModel},
+    },
 )
 async def delete_movie(
     movie_id: int,
     user: CurrentUser,
     movies_service: Annotated[MovieService, Depends()],
-    ):
+):
     """
     Delete the movie with the given id.
 

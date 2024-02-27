@@ -1,7 +1,7 @@
 import pytest
 from fastapi.testclient import TestClient
-from src.schemas.movie_import_schema import MovieImportCreate
 
+from src.schemas.movie_import_schema import MovieImportCreate
 
 
 @pytest.mark.asyncio

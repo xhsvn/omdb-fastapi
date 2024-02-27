@@ -6,6 +6,7 @@ from src.schemas.movie_import_schema import MovieImportCreate
 from tests.integration.test_movie_import import test_import_movie
 from tests.integration.test_user_auth import test_user_create_and_login
 
+
 @pytest.mark.asyncio
 async def test_list_movie(api_client: TestClient) -> MovieImportCreate:
     movie = await test_import_movie(api_client)
@@ -13,9 +14,9 @@ async def test_list_movie(api_client: TestClient) -> MovieImportCreate:
 
     assert response.status_code == 200
     res = response.json()
-    assert res['total'] == 1
-    item = res['items'][0]
-    assert item['title'] == movie.title
+    assert res["total"] == 1
+    item = res["items"][0]
+    assert item["title"] == movie.title
 
 
 @pytest.mark.asyncio
@@ -25,7 +26,7 @@ async def test_detail_movie(api_client: TestClient) -> MovieImportCreate:
 
     assert response.status_code == 200
     res = response.json()
-    assert res['title'] == movie.title
+    assert res["title"] == movie.title
 
 
 @pytest.mark.asyncio
@@ -34,7 +35,7 @@ async def test_detail_movie_not_found(api_client: TestClient) -> None:
 
     assert response.status_code == 404
     res = response.json()
-    assert res['detail'] == ErrorCode.MOVIE_NOT_FOUND
+    assert res["detail"] == ErrorCode.MOVIE_NOT_FOUND
 
 
 @pytest.mark.asyncio
@@ -44,8 +45,7 @@ async def test_delete_movie_unauthorized(api_client: TestClient) -> None:
 
     assert response.status_code == 401
     res = response.json()
-    assert res['detail'] == ErrorCode.AUTHENTICATION_REQUIRED
-
+    assert res["detail"] == ErrorCode.AUTHENTICATION_REQUIRED
 
 
 @pytest.mark.asyncio
@@ -56,8 +56,7 @@ async def test_delete_movie(api_client: TestClient) -> None:
 
     assert res.status_code == 200
 
-    movie_id = res.json()['id']
-
+    movie_id = res.json()["id"]
 
     response = api_client.delete(f"/api/movies/{movie_id}")
     assert response.status_code == 204

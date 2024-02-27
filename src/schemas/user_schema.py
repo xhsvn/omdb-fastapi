@@ -14,4 +14,3 @@ class UserCreate(UserBase):
 
 class User(UserBase):
     pass
-

@@ -4,7 +4,12 @@ from google.api_core.client_options import ClientOptions
 from google.api_core.exceptions import AlreadyExists
 from google.auth.credentials import AnonymousCredentials
 
-from google.pubsub_v1 import DeadLetterPolicy, GetSubscriptionRequest, GetTopicRequest, PushConfig
+from google.pubsub_v1 import (
+    DeadLetterPolicy,
+    GetSubscriptionRequest,
+    GetTopicRequest,
+    PushConfig,
+)
 from google.pubsub_v1.services.publisher.client import PublisherClient
 from google.pubsub_v1.services.subscriber.client import SubscriberClient
 from google.pubsub_v1.services.publisher.transports.grpc import PublisherGrpcTransport
@@ -14,6 +19,7 @@ from google.pubsub_v1.types import Subscription, Topic
 from loguru import logger
 
 from pydantic_settings import BaseSettings
+
 
 class Settings(BaseSettings):
     pubsub_emulator_host: str
@@ -30,16 +36,21 @@ class Settings(BaseSettings):
 
 settings = Settings()
 
+
 def get_publisher_client(endpoint: str) -> PublisherClient:
     grpc_channel = grpc.insecure_channel(endpoint)
-    transport = PublisherGrpcTransport(channel=grpc_channel, credentials=AnonymousCredentials())
+    transport = PublisherGrpcTransport(
+        channel=grpc_channel, credentials=AnonymousCredentials()
+    )
     client_options = ClientOptions(api_endpoint=endpoint)
     return PublisherClient(transport=transport, client_options=client_options)
 
 
 def get_subscriber_client(endpoint: str) -> SubscriberClient:
     grpc_channel = grpc.insecure_channel(endpoint)
-    transport = SubscriberGrpcTransport(channel=grpc_channel, credentials=AnonymousCredentials())
+    transport = SubscriberGrpcTransport(
+        channel=grpc_channel, credentials=AnonymousCredentials()
+    )
     client_options = ClientOptions(api_endpoint=endpoint)
     return SubscriberClient(transport=transport, client_options=client_options)
 
@@ -52,7 +63,9 @@ def create_topic(client: PublisherClient, topic_path: str) -> Topic:
     try:
         topic = client.create_topic(request)
     except AlreadyExists:
-        logger.info(f"Topic {topic_path} already exists, returning the existing topic ...")
+        logger.info(
+            f"Topic {topic_path} already exists, returning the existing topic ..."
+        )
         return client.get_topic(GetTopicRequest(topic=topic_path))
     else:
         logger.debug(f"Created topic details\n{topic}.")
@@ -71,7 +84,10 @@ def create_subscription(
     push_config = PushConfig(push_endpoint=push_endpoint) if push_endpoint else None
 
     dead_letter_policy = (
-        DeadLetterPolicy(dead_letter_topic=dead_letter_topic, max_delivery_attempts=max_delivery_attempts)
+        DeadLetterPolicy(
+            dead_letter_topic=dead_letter_topic,
+            max_delivery_attempts=max_delivery_attempts,
+        )
         if dead_letter_topic
         else None
     )
@@ -87,11 +103,12 @@ def create_subscription(
         subscription = client.create_subscription(request)
     except AlreadyExists:
         logger.info(f"Subscription {subscription_path} exists, retrieving ...")
-        return client.get_subscription(GetSubscriptionRequest(subscription=subscription_path))
+        return client.get_subscription(
+            GetSubscriptionRequest(subscription=subscription_path)
+        )
     else:
         logger.info(f"Created subscription {subscription.name}")
         logger.debug(f"Created subscription details:\n{subscription}")
-
 
 
 def setup_pubsub_emulator(  # noqa: PLR0913
@@ -116,7 +133,9 @@ def setup_pubsub_emulator(  # noqa: PLR0913
     dlq_topic_path = publisher_client.topic_path(project_id, topic_id_dlq)
     create_topic(publisher_client, dlq_topic_path)
 
-    subscription_path = subscriber_client.subscription_path(project_id, subscription_name)
+    subscription_path = subscriber_client.subscription_path(
+        project_id, subscription_name
+    )
 
     create_subscription(
         subscriber_client,
@@ -127,7 +146,9 @@ def setup_pubsub_emulator(  # noqa: PLR0913
         max_delivery_attempts=max_delivery_attempts,
     )
 
-    dlq_subscription_path = subscriber_client.subscription_path(project_id, subscription_name_dlq)
+    dlq_subscription_path = subscriber_client.subscription_path(
+        project_id, subscription_name_dlq
+    )
 
     create_subscription(
         subscriber_client,

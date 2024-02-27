@@ -3,14 +3,13 @@ from sqlalchemy import select
 from src.core.database import DBSession
 from src.models.user import User
 
+
 class UserRepository:
     """Class for accessing user table."""
 
-
     def __init__(self, session: DBSession):
         self.session = session
-        
-    
+
     async def add_user(self, user: User) -> User:
         """
         Add user to database.
@@ -20,7 +19,6 @@ class UserRepository:
         self.session.add(user)
         await self.session.flush()
 
-    
     async def get_user_or_none_by_username(self, username: str) -> User | None:
         """
         Get user by username or return None.

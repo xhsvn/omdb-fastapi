@@ -1,4 +1,3 @@
-
 from typing import AsyncGenerator
 from fastapi import Request
 import pytest_asyncio
@@ -24,22 +23,25 @@ from sqlalchemy.pool import StaticPool
 from src.core.model import Base
 
 
-
 @pytest.fixture
 def mock_session():
     return AsyncMock(spec=DBSession)
+
 
 @pytest_asyncio.fixture
 async def mock_user():
     return AsyncMock(spec=User)
 
+
 @pytest.fixture
 def mock_user_repository():
     return Mock(spec=UserRepository)
 
+
 @pytest.fixture
 def mock_movie_repository():
     return Mock(spec=MovieRepository)
+
 
 @pytest.fixture
 def mock_movie_import_repository():
@@ -55,6 +57,7 @@ def mock_queue_service():
 def mock_omdb_service():
     return Mock(spec=OmdbService)
 
+
 @pytest.fixture
 def mock_settings():
     settings = Settings(
@@ -64,10 +67,8 @@ def mock_settings():
         google_project_id="test_project",
         pubsub_project_id="test_pubsub_project",
         omdb_api_key="omdb_api_key",
-
     )
     return settings
-
 
 
 @pytest_asyncio.fixture
@@ -85,15 +86,17 @@ async def get_db_session_overrider():
         connect_args={"check_same_thread": False},
         poolclass=StaticPool,
     )
-    TestingSessionLocal = async_sessionmaker(autocommit=False, autoflush=False, bind=engine)
-
+    TestingSessionLocal = async_sessionmaker(
+        autocommit=False, autoflush=False, bind=engine
+    )
 
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.drop_all)
         await conn.run_sync(Base.metadata.create_all)
 
-
-    async def override_get_db_session(request: Request) -> AsyncGenerator[AsyncSession, None]:
+    async def override_get_db_session(
+        request: Request,
+    ) -> AsyncGenerator[AsyncSession, None]:
         """
         Create and get database session.
 
@@ -106,7 +109,7 @@ async def get_db_session_overrider():
         finally:
             await db.commit()
             await db.close()
-    
+
     return override_get_db_session
 
 
@@ -127,23 +130,24 @@ def api_client(
     get_db_session_overrider,
     api_app: FastAPI,
     worker_app: FastAPI,
-    ) -> Generator:
+) -> Generator:
     worker_app.dependency_overrides[_get_db_session] = get_db_session_overrider
     worker_client = TestClient(worker_app)
+
     class QueueServiceMock:
         def __init__(self):
             pass
 
         def publish_on_fetch_topic(self, *, message: str = "", **attrs) -> str:
             body = {
-                'message': {
-                    'data': '',
-                    'messageId': attrs['movie_import_id'],
-                    'attributes': attrs
+                "message": {
+                    "data": "",
+                    "messageId": attrs["movie_import_id"],
+                    "attributes": attrs,
                 }
             }
             worker_client.post("/movies/fetch", json=body)
-            
+
     api_app.dependency_overrides[QueueService] = QueueServiceMock
     api_app.dependency_overrides[_get_db_session] = get_db_session_overrider
 

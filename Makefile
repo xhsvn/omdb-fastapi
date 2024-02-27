@@ -19,6 +19,7 @@ setup-dev: ## setup dev environment: pipx, poetry, pre-commit and .env
 	pre-commit install 2>&1
 	[ ! -e ".env" ] && cp "example.env" ".env" || echo "file .env already exists"
 
+
 .PHONY: update-pre-commit
 update-pre-commit: ## Update pre-commit hooks
 	pre-commit autoupdate
@@ -55,7 +56,7 @@ test-units: ## Run pytest
 
 .PHONY: test-integration
 test-integration: ## Run integration tests
-	docker-compose --env-file ".env" run  --no-deps --rm api pytest tests/integration 
+	docker-compose --env-file ".env" run  --no-deps --rm api pytest tests/integration
 
 
 .PHONY: test-all
@@ -68,7 +69,7 @@ coverage: ## Run coverage
 
 .PHONY: makemigrations
 makemigrations: ## Run makemigrations
-	docker exec -it api alembic revision --autogenerate 
+	docker exec -it api alembic revision --autogenerate
 
 
 .PHONY: migrate
@@ -77,4 +78,4 @@ migrate: ## Run migrate
 
 .PHONY: access-db
 access-db: ## Access database
-	docker exec -it database psql "example-db" -U "example-user" 
+	docker exec -it database psql "example-db" -U "example-user"

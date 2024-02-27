@@ -11,14 +11,13 @@ from src.services.auth_service import AuthService
 router = APIRouter(prefix="/auth", tags=["auth"])
 
 
-
 @router.post(
     "/doc", response_model=auth_schema.AccessTokenResponse, include_in_schema=False
 )
 async def login_for_access_token(
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
     auth_service: Annotated[AuthService, Depends()],
-    ) -> auth_schema.AccessTokenResponse:
+) -> auth_schema.AccessTokenResponse:
     """
     Authenticate a user with the given username and password for using the API docs.
 
@@ -40,10 +39,8 @@ async def login_for_access_token(
     responses={status.HTTP_401_UNAUTHORIZED: {"model": ExceptionModel}},
 )
 async def authenticate_user(
-    auth_data: auth_schema.AuthData,
-    auth_service: Annotated[AuthService, Depends()]
-    ) -> auth_schema.AccessTokenResponse:
-
+    auth_data: auth_schema.AuthData, auth_service: Annotated[AuthService, Depends()]
+) -> auth_schema.AccessTokenResponse:
     """
     Authenticate a user with the given username and password and return an access token.
 

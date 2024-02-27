@@ -12,7 +12,7 @@ from src.core.security import get_password_hash
 class UserService:
     def __init__(self, user_repository: Annotated[UserRepository, Depends()]):
         self.user_repository = user_repository
-    
+
     async def create_user(self, user_create: user_schema.UserCreate) -> UserModel:
         """
         Create a new user with the given username and password.
@@ -20,12 +20,13 @@ class UserService:
         :param user: User data
         :return: Created user
         """
-        user = await self.user_repository.get_user_or_none_by_username(user_create.username)
-        
-        
+        user = await self.user_repository.get_user_or_none_by_username(
+            user_create.username
+        )
+
         if user is not None:
             raise UsernameTaken()
-        
+
         user = UserModel(
             hashed_password=get_password_hash(user_create.password),
             **user_create.model_dump(exclude=["password"]),

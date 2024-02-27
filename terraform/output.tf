@@ -7,4 +7,3 @@ output "container_image" {
 output "load_balancer_address" {
   value = "http://${google_compute_global_address.global-static-ip.address}"
 }
-

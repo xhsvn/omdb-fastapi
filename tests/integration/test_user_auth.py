@@ -6,21 +6,19 @@ from src.schemas.user_schema import UserCreate
 from src.core.constants import ErrorCode
 
 
-
-
 @pytest.mark.asyncio
 async def test_user_login_invalid(api_client: TestClient) -> None:
-
     user = UserCreateSchemaFactory.build()
     response = api_client.post("/api/users", json=user.model_dump())
     assert response.status_code == 201
 
-    user2 = UserCreateSchemaFactory.build(username=user.username, password=user.password + "invalid")
+    user2 = UserCreateSchemaFactory.build(
+        username=user.username, password=user.password + "invalid"
+    )
     response = api_client.post("/api/auth", json=user2.model_dump())
     assert response.status_code == 401
     res = response.json()
     assert res["detail"] == ErrorCode.INVALID_CREDENTIALS
-
 
 
 @pytest.mark.asyncio
@@ -35,7 +33,6 @@ async def test_user_create_and_login(api_client: TestClient) -> UserCreate:
     token = res["access_token"]
     api_client.headers = {"Authorization": f"Bearer {token}"}
     return user
-
 
 
 @pytest.mark.asyncio

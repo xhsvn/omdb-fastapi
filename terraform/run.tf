@@ -31,7 +31,7 @@ resource "google_cloud_run_v2_service" "api" {
         cpu_idle = true
       }
       volume_mounts {
-        name = "cloudsql"
+        name       = "cloudsql"
         mount_path = "/cloudsql"
       }
       env {
@@ -43,26 +43,26 @@ resource "google_cloud_run_v2_service" "api" {
         value = google_pubsub_topic.main.name
       }
       env {
-        name = "POSTGRES_CONNECTION_NAME"
+        name  = "POSTGRES_CONNECTION_NAME"
         value = google_sql_database_instance.database.connection_name
       }
-        env {
-            name  = "POSTGRES_DB"
-            value = google_sql_database.database.name
-        }
-        env {
-            name  = "POSTGRES_USER"
-            value = google_sql_user.database_user.name
-        }
-        env {
-            name  = "POSTGRES_PASSWORD"
-            value = google_sql_user.database_user.password
-        }
-        env {
-            name  = "OMDB_API_KEY"
-            value = "3ea4bc11"
-        
-        }
+      env {
+        name  = "POSTGRES_DB"
+        value = google_sql_database.database.name
+      }
+      env {
+        name  = "POSTGRES_USER"
+        value = google_sql_user.database_user.name
+      }
+      env {
+        name  = "POSTGRES_PASSWORD"
+        value = google_sql_user.database_user.password
+      }
+      env {
+        name  = "OMDB_API_KEY"
+        value = "3ea4bc11"
+
+      }
     }
   }
 
@@ -105,7 +105,7 @@ resource "google_cloud_run_v2_service" "worker" {
         cpu_idle = true
       }
       volume_mounts {
-        name = "cloudsql"
+        name       = "cloudsql"
         mount_path = "/cloudsql"
       }
       env {
@@ -117,25 +117,24 @@ resource "google_cloud_run_v2_service" "worker" {
         value = google_pubsub_topic.main.name
       }
       env {
-        name = "POSTGRES_CONNECTION_NAME"
+        name  = "POSTGRES_CONNECTION_NAME"
         value = google_sql_database_instance.database.connection_name
       }
       env {
-          name  = "POSTGRES_DB"
-          value = google_sql_database.database.name
+        name  = "POSTGRES_DB"
+        value = google_sql_database.database.name
       }
       env {
-          name  = "POSTGRES_USER"
-          value = google_sql_user.database_user.name
+        name  = "POSTGRES_USER"
+        value = google_sql_user.database_user.name
       }
       env {
-          name  = "POSTGRES_PASSWORD"
-          value = google_sql_user.database_user.password
+        name  = "POSTGRES_PASSWORD"
+        value = google_sql_user.database_user.password
       }
       env {
-          name  = "OMDB_API_KEY"
-          value = "3ea4bc11"
-      
+        name  = "OMDB_API_KEY"
+        value = "3ea4bc11"
       }
     }
   }
@@ -167,12 +166,12 @@ resource "google_cloud_run_service_iam_member" "worker_invoker" {
 
 resource "google_project_iam_member" "sql_connect" {
   for_each = toset([
-     "roles/cloudsql.client",
-     "roles/cloudsql.editor",
-     "roles/cloudsql.admin",
-     "roles/resourcemanager.projectIamAdmin"
-  ]) 
-  role = each.key
+    "roles/cloudsql.client",
+    "roles/cloudsql.editor",
+    "roles/cloudsql.admin",
+    "roles/resourcemanager.projectIamAdmin"
+  ])
+  role    = each.key
   project = google_sql_database_instance.database.project
-  member = "serviceAccount:${google_service_account.app.email}"
+  member  = "serviceAccount:${google_service_account.app.email}"
 }

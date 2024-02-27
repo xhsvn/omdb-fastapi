@@ -1,7 +1,6 @@
-import enum
-
 from sqlalchemy.orm import Mapped, mapped_column
 from src.core.model import Base
+
 
 class Rating(Base):
     __tablename__ = "ratings"
@@ -35,5 +34,4 @@ class Movie(Base):
     box_office: Mapped[str] = mapped_column(nullable=True)
     production: Mapped[str] = mapped_column(nullable=True)
     website: Mapped[str] = mapped_column(nullable=True)
-    # ratings: 
-
+    # ratings:

@@ -58,8 +58,6 @@ class Settings(BaseSettings):
     postgres_connection_name: str | None = None
     postgres_echo: bool = False
 
-
-
     @property
     def fastapi_config(self) -> dict[str, Any]:
         return {
@@ -67,10 +65,9 @@ class Settings(BaseSettings):
             "title": self.title,
             "version": self.version,
         }
-    
+
     @property
     def database_url(self) -> URL:
-
         if self.postgres_connection_name:
             return URL.create(
                 drivername="postgresql+asyncpg",
@@ -87,7 +84,7 @@ class Settings(BaseSettings):
             port=self.postgres_port,
             database=self.postgres_db,
         )
-    
+
 
 @lru_cache
 def get_settings() -> Settings:

@@ -3,6 +3,7 @@ from pydantic import Field, ConfigDict
 from pydantic.alias_generators import to_pascal
 from src.core.schema import BaseModel
 
+
 class MovieBase(BaseModel):
     title: str
     year: int
@@ -27,15 +28,15 @@ class MovieBase(BaseModel):
     production: str
     website: str
 
+
 class Movie(MovieBase):
     id: int
+
 
 class MovieOmdb(MovieBase):
     dvd: str = Field(alias="DVD")
     imdb_id: str = Field(alias="imdbID")
     imdb_rating: str = Field(alias="imdbRating")
     imdb_votes: str = Field(alias="imdbVotes")
-    
-    model_config = ConfigDict(
-        alias_generator=to_pascal
-    )
+
+    model_config = ConfigDict(alias_generator=to_pascal)

@@ -24,6 +24,6 @@ config.js
 .git/
 .gitignore
 
- 
+
 docker-compose*.yml
 terraform/

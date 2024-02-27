@@ -6,6 +6,7 @@ from src.core.constants import ErrorCode
 
 # define custom exceptions
 
+
 class DetailedHTTPException(HTTPException):
     STATUS_CODE = status.HTTP_500_INTERNAL_SERVER_ERROR
     DETAIL = "Server error"

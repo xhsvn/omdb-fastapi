@@ -1,7 +1,6 @@
 import asyncio
 from logging.config import fileConfig
 
-from sqlalchemy import pool
 from sqlalchemy.engine import Connection
 
 from sqlalchemy.ext.asyncio import create_async_engine
@@ -21,15 +20,14 @@ if config.config_file_name is not None:
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-from src.core.model import Base
+from src.core.model import Base  # noqa: E402
+
 target_metadata = Base.metadata
-from src.models import user, movie, movie_import
 # target_metadata = User.metadata
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
 # my_important_option = config.get_main_option("my_important_option")
 # ... etc.
-
 
 
 def run_migrations_offline() -> None:
@@ -45,6 +43,7 @@ def run_migrations_offline() -> None:
 
     """
     from src.settings import get_settings
+
     settings = get_settings()
 
     context.configure(
@@ -56,7 +55,6 @@ def run_migrations_offline() -> None:
 
     with context.begin_transaction():
         context.run_migrations()
-
 
 
 def do_run_migrations(connection: Connection) -> None:
@@ -72,6 +70,7 @@ async def run_async_migrations() -> None:
 
     """
     from src.settings import get_settings
+
     settings = get_settings()
     connectable = create_async_engine(settings.database_url)
 
@@ -79,7 +78,6 @@ async def run_async_migrations() -> None:
         await connection.run_sync(do_run_migrations)
 
     await connectable.dispose()
-
 
 
 def run_migrations_online() -> None:
