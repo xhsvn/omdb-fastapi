@@ -1,4 +1,3 @@
-
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, status
@@ -9,7 +8,6 @@ from src.schemas import movie_import_schema
 from src.services.movie_import_service import MovieImportService
 
 router = APIRouter(prefix="/imports", tags=["import"])
-
 
 
 @router.post(
@@ -24,7 +22,7 @@ router = APIRouter(prefix="/imports", tags=["import"])
 async def import_movie(
     movie_create: movie_import_schema.MovieImportCreate,
     movies_import_service: Annotated[MovieImportService, Depends()],
-    ):
+):
     """
     Check that if the a movie with the given title does not exist and create it.
 

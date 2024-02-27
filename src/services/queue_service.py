@@ -5,11 +5,9 @@ from google.cloud import pubsub_v1
 
 from src.deps import SettingsDep
 
-class QueueService:
 
-    def __init__(self,
-        settings: SettingsDep
-        ) -> None:
+class QueueService:
+    def __init__(self, settings: SettingsDep) -> None:
         self.project = settings.pubsub_project_id or settings.google_project_id
         self.topic = settings.pubsub_movies_fetch_topic
         self.publisher_client = pubsub_v1.PublisherClient()
@@ -30,8 +28,6 @@ class QueueService:
             **attrs,
         )
         return future.result()
-
-
 
 
 QueueServiceDep = Annotated[QueueService, Depends()]

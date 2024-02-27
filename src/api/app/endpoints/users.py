@@ -20,8 +20,8 @@ router = APIRouter(prefix="/users", tags=["users"])
     responses={status.HTTP_400_BAD_REQUEST: {"model": ExceptionModel}},
 )
 async def register_user(
-    user_create: user_schema.UserCreate,
-    services: Annotated[UserService, Depends()]):
+    user_create: user_schema.UserCreate, services: Annotated[UserService, Depends()]
+):
     """
     Create a new user with the given username and password.
 
@@ -37,7 +37,7 @@ async def register_user(
     summary="Get current user",
     description="Get the current user.",
     response_description="The current user",
-)
+    )
 async def get_user(user: CurrentUser):
     """
     Get the current user.
