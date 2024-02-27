@@ -14,7 +14,7 @@ help: ## Show this help
 .PHONY: setup-dev
 setup-dev: ## setup dev environment: poetry and .env
 	poetry install --no-root
-	[ ! -e ".env" ] && cp "env.example" ".env" || echo "file .env already exists"
+	[ ! -e ".env" ] && cp ".env.example" ".env" || echo "file .env already exists"
 
 
 .PHONY: update-pre-commit
