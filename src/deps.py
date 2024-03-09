@@ -5,6 +5,7 @@ from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
 
 from src.core.exceptions import AuthRequired, InvalidToken, UserNotFound
+from src.core.database import DBSession
 from src.models.user import User
 from src.schemas.auth_schema import JWTData
 from src.services.user_service import UserService
@@ -18,6 +19,7 @@ SettingsDep = Annotated[Settings, Depends(get_settings)]
 
 async def get_current_user(
     settings: SettingsDep,
+    session: DBSession,
     user_service: Annotated[UserService, Depends()],
     token: str | None = Depends(oauth2_scheme),
 ) -> User:
@@ -38,7 +40,8 @@ async def get_current_user(
 
     data = JWTData(**payload)
 
-    user = await user_service.get_user_by_id(data.user_id)
+    async with session.begin():
+        user = await user_service.get_user_by_id(data.user_id)
     if not user:
         raise UserNotFound()
     return user

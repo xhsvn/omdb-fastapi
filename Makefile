@@ -48,7 +48,7 @@ logs: ## Show docker-compose logs
 
 .PHONY: test-units
 test-units: ## Run pytest
-	docker-compose run --no-deps --rm worker poetry install && pytest tests/units
+	docker-compose --env-file ".env" run  --no-deps --rm api pytest tests/units
 
 
 .PHONY: test-integration

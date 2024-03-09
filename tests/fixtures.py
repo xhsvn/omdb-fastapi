@@ -86,7 +86,7 @@ async def get_db_session_overrider():
         poolclass=StaticPool,
     )
     TestingSessionLocal = async_sessionmaker(
-        autocommit=False, autoflush=False, bind=engine
+        autocommit=False, autoflush=False, bind=engine, expire_on_commit=False
     )
 
     async with engine.begin() as conn:
